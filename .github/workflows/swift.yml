@@ -2,39 +2,20 @@ name: Build Unsigned IPA for AltStore
 
 on:
   workflow_dispatch:
-    inputs:
-      scheme:
-        description: Xcode scheme to build
-        required: true
-      workspace:
-        description: Optional .xcworkspace path (e.g., App.xcworkspace). Leave empty to use .xcodeproj discovery.
-        required: false
-        default: ""
-      configuration:
-        description: Build configuration
-        required: false
-        default: Release
   push:
-    branches: [ main, master ]
+    branches:
+      - main
+      - master
 
 jobs:
   build-unsigned-ipa:
     runs-on: macos-latest
-    env:
-      CONFIGURATION: ${{ inputs.configuration || 'Release' }}
-      SCHEME: ${{ inputs.scheme }}
-      WORKSPACE: ${{ inputs.workspace }}
-      # Customize if you want a different output name
-      IPA_NAME: ${{ inputs.scheme }}.ipa
-
     steps:
-      # ---- Check out sources (with your existing submodules cache) ----
-      - name: Configure Git for GitLab submodules
+    - name: Configure Git for GitLab submodules
   run: |
     git config --global url."https://${GITLAB_TOKEN}:x-oauth-basic@gitlab.com/".insteadOf "https://gitlab.com/"
   env:
     GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
-    
       - name: Cache Git submodules
         uses: actions/cache@v4
         with:
@@ -50,29 +31,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-
-      # ---- Dependencies (SwiftPM and optional CocoaPods) ----
-      - name: Cache SwiftPM
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/Library/Caches/org.swift.swiftpm
-            ~/Library/Developer/Xcode/DerivedData
-          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-spm-
-
-      - name: Set up Ruby for CocoaPods (only if Podfile exists)
-        if: hashFiles('**/Podfile') != ''
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-
-      - name: Install CocoaPods (only if Podfile exists)
-        if: hashFiles('**/Podfile') != ''
-        run: |
-          gem install cocoapods --no-document
-          pod install --repo-updat
 
       - name: Install Nix
         run: |
