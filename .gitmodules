@@ -6,8 +6,8 @@
 	url = https://github.com/tctiSH/SwiftTerm.git
 [submodule "roms/u-boot"]
     path = qemu-tcti/roms/u-boot
-    url = https://gitlab.com/qemu-project/u-boot.git
+    url = https://github.com/qemu/u-boot.git
 
 [submodule "roms/u-boot-sam460ex"]
     path = qemu-tcti/roms/u-boot-sam460ex
-    url = https://gitlab.com/qemu-project/u-boot-sam460ex.git
+    url = https://github.com/qemu/u-boot-sam460ex.git
