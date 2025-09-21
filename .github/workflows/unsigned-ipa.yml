@@ -22,6 +22,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-submodules-
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false  # don’t fetch them yet
+
       - name: Configure Git for GitLab submodules
         run: |
           git config --global url."https://${GITLAB_TOKEN}:x-oauth-basic@gitlab.com/".insteadOf "https://gitlab.com/"
@@ -31,11 +36,6 @@ jobs:
       - name: Update submodules to latest
         run: |
           git submodule update --init --recursive --remote
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Install Nix
         run: |
