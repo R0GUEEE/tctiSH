@@ -28,6 +28,10 @@ jobs:
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
 
+      - name: Update submodules to latest
+        run: |
+          git submodule update --init --recursive --remote
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
