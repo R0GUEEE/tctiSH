@@ -11,22 +11,21 @@ jobs:
     name: Build and analyse default scheme using xcodebuild command
     runs-on: macos-latest
 
-    steps:
-    - name: Cache Git submodules
-        uses: actions/cache@v4
-        with:
-          path: |
-            .git/modules
-            qemu-tcti
-            third-party/SwiftTerm
-          key: ${{ runner.os }}-submodules-${{ hashFiles('.gitmodules') }}
-          restore-keys: |
-            ${{ runner.os }}-submodules-
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@v4
+    with:
+      submodules: recursive
 
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
+  - name: Cache Git submodules
+    uses: actions/cache@v4
+    with:
+      path: |
+        qemu-tcti
+        third-party/SwiftTerm
+      key: ${{ runner.os }}-submodules-${{ hashFiles('.gitmodules') }}
+      restore-keys: |
+        ${{ runner.os }}-submodules-
           
       - name: Set Default Scheme
         run: |
