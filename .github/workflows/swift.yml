@@ -29,6 +29,12 @@ jobs:
 
     steps:
       # ---- Check out sources (with your existing submodules cache) ----
+      - name: Configure Git for GitLab submodules
+  run: |
+    git config --global url."https://${GITLAB_TOKEN}:x-oauth-basic@gitlab.com/".insteadOf "https://gitlab.com/"
+  env:
+    GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+    
       - name: Cache Git submodules
         uses: actions/cache@v4
         with:
