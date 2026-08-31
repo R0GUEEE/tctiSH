@@ -374,11 +374,22 @@ build_qemu_tcti () {
     CXXFLAGS=
     LDFLAGS=
 
+    # Convert a whitespace-separated flag string into meson array syntax:
+    #   '-arch arm64 -isysroot /x'  ->  ['-arch','arm64','-isysroot','/x']
+    meson_array () {
+        echo "[$(echo $1 | tr ' ' '\n' | sed "s/.*/'&'/" | paste -sd, -)]"
+    }
+
     pwd="$(pwd)"
 	mkdir -p "$QEMU_DIR"
     cd "$QEMU_DIR"
     echo "${GREEN}Configuring QEMU...${NC}"
-    ../configure --prefix="$PREFIX" --host="$CHOST" --cross-prefix="" --with-coroutine=libucontext $@
+    # CFLAGS/LDFLAGS are intentionally cleared above so QEMU's host sanity
+    # checks still run on macOS; the real cross flags go straight into meson
+    # via -Dc_args/-Dc_link_args (configure passes -D* through verbatim).
+    ../configure --prefix="$PREFIX" --host="$CHOST" --cross-prefix="" --with-coroutine=libucontext $@ \
+        -Dc_args="$(meson_array "$QEMU_CFLAGS")" \
+        -Dc_link_args="$(meson_array "$QEMU_LDFLAGS")"
     echo "${GREEN}Building QEMU...${NC}"
     ninja libqemu-x86_64-softmmu.dylib
     echo "${GREEN}Installing QEMU...${NC}"
@@ -408,7 +419,9 @@ build_qemu_jit () {
 	mkdir -p "$QEMU_DIR"
     cd "$QEMU_DIR"
     echo "${GREEN}Configuring QEMU-JIT...${NC}"
-    ../configure --prefix="$PREFIX" --host="$CHOST" --cross-prefix="" --with-coroutine=libucontext $@
+    ../configure --prefix="$PREFIX" --host="$CHOST" --cross-prefix="" --with-coroutine=libucontext $@ \
+        -Dc_args="$(meson_array "$QEMU_CFLAGS")" \
+        -Dc_link_args="$(meson_array "$QEMU_LDFLAGS")"
     echo "${GREEN}Building QEMU-JIT...${NC}"
     ninja libqemu-x86_64-softmmu.dylib
 	echo "${GREEN}Copying single library...${NC}"
