@@ -1,0 +1,28 @@
+--- a/configure
++++ b/configure
+@@ -3800,6 +3800,6 @@
+   CFLAGS=$ac_save_CFLAGS
+ elif test $ac_cv_prog_cc_g = yes; then
+   if test "$GCC" = yes; then
+-    CFLAGS="-g -O2"
++    CFLAGS="-g -O2 -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-pointer-sign -Wno-return-type -Wno-implicit-function-declaration"
+   else
+     CFLAGS="-g"
+@@ -12671,6 +12671,6 @@
+   CFLAGS=$ac_save_CFLAGS
+ elif test $ac_cv_prog_cc_g = yes; then
+   if test "$GCC" = yes; then
+-    CFLAGS="-g -O2"
++    CFLAGS="-g -O2 -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-pointer-sign -Wno-return-type -Wno-implicit-function-declaration"
+   else
+     CFLAGS="-g"
+--- a/glib/configure
++++ b/glib/configure
+@@ -4332,6 +4332,6 @@
+   CFLAGS=$ac_save_CFLAGS
+ elif test $ac_cv_prog_cc_g = yes; then
+   if test "$GCC" = yes; then
+-    CFLAGS="-g -O2"
++    CFLAGS="-g -O2 -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-pointer-sign -Wno-return-type -Wno-implicit-function-declaration"
+   else
+     CFLAGS="-g"
