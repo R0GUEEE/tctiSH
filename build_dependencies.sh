@@ -380,9 +380,9 @@ build_qemu_tcti () {
     echo "${GREEN}Configuring QEMU...${NC}"
     ../configure --prefix="$PREFIX" --host="$CHOST" --cross-prefix="" --with-coroutine=libucontext $@
     echo "${GREEN}Building QEMU...${NC}"
-    ninja
+    ninja libqemu-x86_64-softmmu.dylib
     echo "${GREEN}Installing QEMU...${NC}"
-    ninja install
+    meson install --no-rebuild
     cd "$pwd"
 
     CFLAGS="$QEMU_CFLAGS"
@@ -410,7 +410,7 @@ build_qemu_jit () {
     echo "${GREEN}Configuring QEMU-JIT...${NC}"
     ../configure --prefix="$PREFIX" --host="$CHOST" --cross-prefix="" --with-coroutine=libucontext $@
     echo "${GREEN}Building QEMU-JIT...${NC}"
-    ninja
+    ninja libqemu-x86_64-softmmu.dylib
 	echo "${GREEN}Copying single library...${NC}"
 	echo cp "libqemu-x86_64-softmmu.dylib" "$PREFIX/lib/libqemu-x86_64-softmmu_jit.dylib"
 	cp "libqemu-x86_64-softmmu.dylib" "$PREFIX/lib/libqemu-x86_64-softmmu_jit.dylib"
