@@ -625,7 +625,7 @@ QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --disable-libssh --disable
 QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --disable-sdl --disable-snappy --with-coroutine=libucontext"
 QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --disable-capstone --disable-gtk"
 QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --enable-virtfs --target-list=x86_64-softmmu"
-QEMU_PLATFORM_TCTI_FLAGS="--enable-tcg-tcti"
+QEMU_PLATFORM_TCTI_FLAGS="--enable-tcg-threaded-interpreter"
 
 # Setup directories
 BASEDIR="$(dirname "$(realpath $0)")"
