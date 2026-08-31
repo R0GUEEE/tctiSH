@@ -397,6 +397,11 @@ build_qemu_tcti () {
     # shared-lib tool targets (libqemu-img.dylib, qemu-storage-daemon, ...)
     # which the app never uses, so copy the dylib directly instead.
     cp libqemu-x86_64-softmmu.dylib "$PREFIX/lib/"
+    # pc-bios blobs referenced by the app's resource-copy build phase.
+    mkdir -p "$PREFIX/share/qemu"
+    for f in bios-256k.bin efi-virtio.rom kvmvapic.bin linuxboot_dma.bin vgabios-stdvga.bin; do
+        cp "pc-bios/$f" "$PREFIX/share/qemu/"
+    done
     cd "$pwd"
 
     CFLAGS="$QEMU_CFLAGS"
