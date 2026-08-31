@@ -393,7 +393,10 @@ build_qemu_tcti () {
     echo "${GREEN}Building QEMU...${NC}"
     ninja libqemu-x86_64-softmmu.dylib trace/trace-events-all qemu-system-x86_64-unsigned
     echo "${GREEN}Installing QEMU...${NC}"
-    meson install --no-rebuild
+    # Install just the emulator dylib. Full 'meson install' also requires the
+    # shared-lib tool targets (libqemu-img.dylib, qemu-storage-daemon, ...)
+    # which the app never uses, so copy the dylib directly instead.
+    cp libqemu-x86_64-softmmu.dylib "$PREFIX/lib/"
     cd "$pwd"
 
     CFLAGS="$QEMU_CFLAGS"
