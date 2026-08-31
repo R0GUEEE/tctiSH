@@ -400,7 +400,7 @@ build_qemu_tcti () {
     # pc-bios blobs referenced by the app's resource-copy build phase.
     mkdir -p "$PREFIX/share/qemu"
     for f in bios-256k.bin efi-virtio.rom kvmvapic.bin linuxboot_dma.bin vgabios-stdvga.bin; do
-        cp "pc-bios/$f" "$PREFIX/share/qemu/"
+        cp "../pc-bios/$f" "$PREFIX/share/qemu/"
     done
     cd "$pwd"
 
