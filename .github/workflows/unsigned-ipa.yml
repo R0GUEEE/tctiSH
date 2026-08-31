@@ -24,11 +24,11 @@ jobs:
       - name: Install host build tools
         run: |
           brew install bison gettext glib libgpg-error meson ninja
-          python3 -m pip install six pyparsing
+          python3 -m pip install --break-system-packages six pyparsing
 
       - name: Build QEMU and native dependencies
         run: |
-          export PATH="/usr/local/opt/bison/bin:/usr/local/opt/gettext/bin:$PATH"
+          export PATH="$(brew --prefix)/opt/bison/bin:$(brew --prefix)/opt/gettext/bin:$PATH"
           ./build_dependencies.sh
 
       - name: Build unsigned app
