@@ -24,7 +24,7 @@ jobs:
       - name: Install host build tools
         run: |
           brew install bison gettext glib libgpg-error meson ninja
-          python3 -m pip install --break-system-packages six pyparsing
+          python3 -m pip install --break-system-packages six pyparsing "setuptools<81"
 
       - name: Build QEMU and native dependencies
         run: |
