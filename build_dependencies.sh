@@ -391,7 +391,7 @@ build_qemu_tcti () {
         -Dc_args="$(meson_array "$QEMU_CFLAGS")" \
         -Dc_link_args="$(meson_array "$QEMU_LDFLAGS")"
     echo "${GREEN}Building QEMU...${NC}"
-    ninja libqemu-x86_64-softmmu.dylib
+    ninja libqemu-x86_64-softmmu.dylib trace/trace-events-all
     echo "${GREEN}Installing QEMU...${NC}"
     meson install --no-rebuild
     cd "$pwd"
