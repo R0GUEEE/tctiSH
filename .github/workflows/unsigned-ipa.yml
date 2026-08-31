@@ -17,7 +17,9 @@ jobs:
       - name: Checkout (with submodules)
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          # Level-1 only. qemu-tcti has nested roms/edk2 submodules that are
+          # NOT needed to build x86_64-softmmu, and some (subhook) are dead repos.
+          submodules: true
 
       - name: Install host build tools
         run: |
