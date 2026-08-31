@@ -513,24 +513,6 @@ build_qemu_dependencies () {
     build $PIXMAN_SRC
 }
 
-# libucontext is required for -Dcoroutine_backend=libucontext (QEMU 9.1-era
-# tctiSH fork). The subprojects/*.wrap files in the qemu-tcti submodule are
-# not auto-fetched by meson (no fallback: in meson.build), so we build and
-# install it into the sysroot here, matching the pinned wrap revision.
-build_libucontext () {
-    NAME="libucontext"
-    clone https://github.com/utmapp/libucontext 9b1d8f01a6e99166f9808c79966abe10786de8b6
-    meson_build "$BUILD_DIR/$NAME"
-}
-
-# libslirp (user-mode networking) is required by -Dslirp=enabled. Same story:
-# build it into the sysroot ourselves, pinned to the wrap revision.
-build_libslirp () {
-    NAME="libslirp.git"
-    clone https://gitlab.freedesktop.org/slirp/libslirp.git 26be815b86e8d49add8c9a8b320239b9594ff03d
-    meson_build "$BUILD_DIR/$NAME"
-}
-
 fixup () {
     FILE=$1
     BASE=$(basename "$FILE")
@@ -641,7 +623,7 @@ QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --disable-gnutls --disable
 QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --disable-nettle --disable-virglrenderer --disable-libusb"
 QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --disable-libssh --disable-zstd --enable-slirp"
 QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --disable-sdl --disable-snappy --with-coroutine=libucontext"
-QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --disable-capstone --disable-gtk"
+QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --disable-capstone --disable-gtk --enable-ucontext"
 QEMU_PLATFORM_BUILD_FLAGS="$QEMU_PLATFORM_BUILD_FLAGS --enable-virtfs --target-list=x86_64-softmmu"
 QEMU_PLATFORM_TCTI_FLAGS="--enable-tcg-threaded-interpreter"
 
@@ -738,8 +720,6 @@ rm -f "$BUILD_DIR/meson.cross"
 copy_private_headers
 build_pkg_config
 build_qemu_dependencies
-build_libucontext
-build_libslirp
 build_qemu_tcti $QEMU_PLATFORM_BUILD_FLAGS $QEMU_PLATFORM_TCTI_FLAGS
 build_qemu_jit $QEMU_PLATFORM_BUILD_FLAGS
 fixup_all
